@@ -10,7 +10,7 @@ import (
 // CadastrarUsr registra o novo usuario no banco de dados.
 func CadastrarUsr(usr entidades.Usuario) {
 	// conectar no banco de dados e blabla
-	fmt.Println("inserindo no banco de dados")
-	time.Sleep(2)
+	fmt.Printf("inserindo usuario %v no banco de dados\n", usr)
+	time.Sleep(2 * time.Second)
 	fmt.Println("Tudo certo, usuario cadastrado")
 }

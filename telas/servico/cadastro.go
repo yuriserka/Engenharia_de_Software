@@ -3,17 +3,24 @@ package telas
 import (
 	"fmt"
 
-	comandos "github.com/Engenharia_de_Software/backend/comandos"
+	"github.com/Engenharia_de_Software/backend/comandos"
 	"github.com/Engenharia_de_Software/entidades"
+
+	"github.com/howeyc/gopass"
 )
 
 func CadastrarUsuario() {
-	usr := entidades.Usuario{}
+	var cpf string
+	fmt.Printf("Cpf: ")
+	fmt.Scanf("%s\n", &cpf)
+	fmt.Printf("Senha: ")
+	senha, err := gopass.GetPasswdMasked()
+	if err != nil {
+		panic(err.Error())
+	}
 
-	fmt.Println("Digite seu CPF")
-	fmt.Scanln(&usr.Cpf)
-	fmt.Println("Digite sua senha")
-	fmt.Scanln(&usr.Senha)
-
-	comandos.CadastrarNovoUsuario(usr)
+	comandos.CadastrarNovoUsuario(entidades.Usuario{
+		Cpf:   cpf,
+		Senha: string(senha),
+	})
 }
