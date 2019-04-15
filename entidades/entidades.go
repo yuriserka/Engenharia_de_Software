@@ -22,7 +22,7 @@ type Usuario struct {
 //
 // Só é permitida a existência de 10 apresentações
 type Evento struct {
-	Codigo, Nome, Cidade, Estado, Tipo, Classificaçao string
+	Codigo, Nome, Cidade, Estado, Tipo, Classificacao string
 }
 
 // Apresentacao é pelo o que os usuários irão pagar para ver.
