@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	telasApresentacao "github.com/Engenharia_de_Software/telas/apresentacao"
+)
 
+// ANTES DE RODAR executar:
+// go get ./...
 func main() {
-	fmt.Println("Hello World!")
+	telasApresentacao.TelaPrincipal()
 }
