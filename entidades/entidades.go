@@ -27,9 +27,10 @@ type Evento struct {
 
 // Apresentacao é pelo o que os usuários irão pagar para ver.
 type Apresentacao struct {
-	Codigo, Sala, Disponibilidade string
-	Data, Horario                 time.Time
-	Preco                         float64
+	Codigo, Sala    string
+	Disponibilidade int
+	Data, Horario   time.Time
+	Preco           float64
 }
 
 // Ingresso é o meio que os usuários tem para poder gerenciar as vendas de cada evento.
