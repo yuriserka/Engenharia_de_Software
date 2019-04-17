@@ -4,8 +4,10 @@ import (
 	telasApresentacao "github.com/Engenharia_de_Software/telas/apresentacao"
 )
 
-// ANTES DE RODAR executar:
-// go get ./...
+/* Executar para funcionar =>
+ * $ go mod download
+ * $ go run .
+ */
 func main() {
 	telasApresentacao.TelaPrincipal()
 }
