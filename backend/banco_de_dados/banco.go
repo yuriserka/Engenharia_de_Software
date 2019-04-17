@@ -12,6 +12,7 @@ type bancoDeDados struct {
 	db *sql.DB
 }
 
+// Init inicia a conexão com o banco de dados. Melhorar isso ainda.
 func (d *bancoDeDados) Init() {
 	password := "NONE"
 	bdName := "NONE"
@@ -26,6 +27,7 @@ func (d *bancoDeDados) Init() {
 	fmt.Println("Conectado com sucesso no banco de dados")
 }
 
+// Close fecha a conexão com o banco de dados.
 func (d *bancoDeDados) Close() {
 	defer d.db.Close()
 

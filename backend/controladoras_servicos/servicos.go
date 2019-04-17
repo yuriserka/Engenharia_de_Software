@@ -3,14 +3,12 @@ package ctrlservicos
 import (
 	"fmt"
 	"time"
-
-	"github.com/Engenharia_de_Software/entidades"
 )
 
-// CadastrarUsr registra o novo usuario no banco de dados.
-func CadastrarUsr(usr entidades.Usuario) {
+// CadastrarUsr registra um usuário no banco de dados.
+func CadastrarUsr(cpf, senha string) {
 	// conectar no banco de dados e blabla
-	fmt.Printf("inserindo usuario %v no banco de dados\n", usr)
+	fmt.Printf("inserindo usuario {Cpf: %s, Senha: %s} no banco de dados\n", cpf, senha)
 	time.Sleep(2 * time.Second)
 	fmt.Println("Tudo certo, usuario cadastrado")
 }
