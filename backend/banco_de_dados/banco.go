@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	// ta vazio pq nao importa o nome que vai ser importado
+	// executa apenas a função init do pacote.
 	_ "github.com/go-sql-driver/mysql"
 )
 

@@ -1,5 +1,6 @@
 package utils
 
+// https://github.com/golang/crypto/blob/master/bcrypt/bcrypt.go
 import (
 	"golang.org/x/crypto/bcrypt"
 )
@@ -17,10 +18,10 @@ func CriptografaSenha(senha string) string {
 // ValidaSenha verifica se a senha que foi retornada da query do banco de dados
 // bate com a senha digitada pelo usuário.
 func ValidaSenha(senhaCriptografada, senhaDigitada string) bool {
-	// Since we'll be getting the hashed password from the DB it
-	// will be a string so we'll need to convert it to a byte slice
 	byteHash, otherPwd := []byte(senhaCriptografada), []byte(senhaDigitada)
+
 	err := bcrypt.CompareHashAndPassword(byteHash, otherPwd)
+
 	if err != nil {
 		return false
 	}

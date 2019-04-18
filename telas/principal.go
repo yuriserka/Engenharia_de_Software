@@ -13,11 +13,12 @@ func TelaPrincipal() {
 		utils.ClearScreen()
 		fmt.Print("\t\tSistema de Vendas de Ingressos\n", "Escolha uma das opções abaixo:\n")
 		fmt.Print("[1] login\n", "[2] cadastrar-se\n", "[3] sair\n", "\topção: ")
-		switch fmt.Scanf("%d\n", &opt); {
-		case opt == 1:
+
+		switch fmt.Scanf("%d\n", &opt); opt {
+		case 1:
 			telaLogin()
 			utils.Pause()
-		case opt == 2:
+		case 2:
 			telaCadastroUsuario()
 			utils.Pause()
 		}

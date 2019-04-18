@@ -1,13 +1,11 @@
 package main
 
-import (
-	telasApresentacao "github.com/Engenharia_de_Software/telas/apresentacao"
-)
+import "github.com/Engenharia_de_Software/telas"
 
 /* Executar para funcionar =>
  * $ go mod download
  * $ go run .
  */
 func main() {
-	telasApresentacao.TelaPrincipal()
+	telas.TelaPrincipal()
 }
