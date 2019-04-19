@@ -1,11 +1,14 @@
 package main
 
-import "github.com/Engenharia_de_Software/telas"
+import (
+	servicos "github.com/Engenharia_de_Software/backend/controladoras_servicos"
+)
 
 /* Executar para funcionar =>
  * $ go mod download
  * $ go run .
  */
 func main() {
-	telas.TelaPrincipal()
+	ctrlSControle := &servicos.ControladoraServicoControle{}
+	ctrlSControle.Build()
 }

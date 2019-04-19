@@ -6,8 +6,8 @@ import (
 )
 
 // CriptografaSenha recebe uma string e retorna um hash para ela, útil para inserção no banco de dados
-func CriptografaSenha(senha string) string {
-	hash, err := bcrypt.GenerateFromPassword([]byte(senha), bcrypt.MinCost)
+func CriptografaSenha(senha []byte) string {
+	hash, err := bcrypt.GenerateFromPassword(senha, bcrypt.MinCost)
 	if err != nil {
 		panic(err.Error())
 	}
