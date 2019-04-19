@@ -1,4 +1,4 @@
-package ctrlServicos
+package servicos
 
 import (
 	"fmt"
@@ -7,19 +7,25 @@ import (
 	"github.com/Engenharia_de_Software/utils"
 )
 
+var banco = make(map[string]string)
+
+// InterfaceServico é a interface que se resopnsabiliza pela execução da lógica de negócio do sistema
+//
+// Executar é o método que irá ser responsável por realizar determinada operação do backend,
+// por esse motivo é um variadico de interface{}, pois todas as interfaces de serviço tomaram esta como base.
 type InterfaceServico interface {
-	// Cada interface terá seu método de executar, por esse motivo é variadico
 	Executar(args ...interface{}) bool
 }
 
-var banco = make(map[string]string)
-
+// InterfaceServicoCadastro é a interface responsável pelo cadastro de um novo usuário ao sistema.
 type InterfaceServicoCadastro struct{}
+
+// InterfaceServicoLogin é a interface responsável pelo login dos usuários do sistema.
 type InterfaceServicoLogin struct{}
 
-// Executar registra um usuário no banco de dados.
-// args = (cpf, senha)
-func (is *InterfaceServicoCadastro) Executar(args ...interface{}) bool {
+// Executar recebe como argumento (cpf, senha string) e
+// retorna true se foi possivel cadastrar ou false caso contrário.
+func (isk *InterfaceServicoCadastro) Executar(args ...interface{}) bool {
 	// conectar no banco de dados e blabla
 	if len(args) != 2 {
 		fmt.Println("é necessario do cpf e senha apenas.")
@@ -28,25 +34,16 @@ func (is *InterfaceServicoCadastro) Executar(args ...interface{}) bool {
 
 	// https://tour.golang.org/methods/15
 	cpf, senha := args[0].(string), args[1].(string)
-
 	banco[cpf] = senha
 
-	time.Sleep(2 * time.Second)
-	fmt.Println("Tudo certo, usuario cadastrado")
+	time.Sleep(1 * time.Second)
 
-	for key, val := range banco {
-		fmt.Printf("CPF: %s, senha: %s\n", key, val)
-	}
 	return true
 }
 
-// Executar verifica se existe um usuário com o cpf no banco de dados, se houver então
-// é retornado sua senha e verificado com a passada como argumento, se forem iguais, então
-// o usuário entra no sistema, caso contrário é informado "Senha incorreta".
-//
-// Caso não haja o cpf
-// passado no banco de dados, então informa "Usuario nao cadastrado ainda.".
-func (is *InterfaceServicoLogin) Executar(args ...interface{}) bool {
+// Executar recebe como argumento (cpf, senha string) e
+// retorna true se as senhas forem iguais ou false caso contrário.
+func (isl *InterfaceServicoLogin) Executar(args ...interface{}) bool {
 	if len(args) != 2 {
 		fmt.Println("é necessario do cpf e senha apenas.")
 		return false

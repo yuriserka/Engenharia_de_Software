@@ -5,7 +5,7 @@ import (
 
 	"github.com/Engenharia_de_Software/utils"
 
-	ctrlServicos "github.com/Engenharia_de_Software/backend/controladoras_servicos"
+	servicos "github.com/Engenharia_de_Software/backend/controladoras_servicos"
 	"github.com/howeyc/gopass"
 )
 
@@ -23,31 +23,32 @@ var getUserData = func() (cpf string, senha []byte) {
 	return
 }
 
-// InterfaceApresentacao é uma Interface virtual, cujo as outras interfaces de apresentação terão como base
+// InterfaceApresentacao é a interface que se resopnsabiliza pela execução da parte textual, ou telas, do programa
+//
+// Executar é o método que irá ser responsável por realizar determinada operação do frontend,
+// por esse motivo é preciso de uma interface de serviço, pois será ela que irá concretizar a ação.
+// Todas as interfaces de apresentação tomaram esta como base.
 type InterfaceApresentacao interface {
-	Executar(is *ctrlServicos.InterfaceServico)
+	Executar(is servicos.InterfaceServico) bool
 }
 
-// InterfaceApresentacaoCadastro é responsável por pegar o input do usuario e cadastra-lo no banco de dados
+// InterfaceApresentacaoCadastro é a interface responsável pela solicitação dos dados do novo usuário do sistema.
 type InterfaceApresentacaoCadastro struct{}
 
-// InterfaceApresentacaoLogin é responsável por pegar o input do usuario e verificar se o mesmo está cadastrado
-// no banco de dados
+// InterfaceApresentacaoLogin é a interface responsável pela solicitação dos dados de um usuário para fazer login no sistema.
 type InterfaceApresentacaoLogin struct{}
 
-// Executar (Cadastro) -> recebe o input do usuário, criptografa e é inserido no banco de dados pela Interface de Serviço.
-func (ia *InterfaceApresentacaoCadastro) Executar(is ctrlServicos.InterfaceServico) {
+// Executar tenta cadastrar determinado usuário ao sistema.
+func (iak *InterfaceApresentacaoCadastro) Executar(is servicos.InterfaceServico) bool {
 	cpf, senha := getUserData()
 	senhaCriptografada := utils.CriptografaSenha(string(senha))
 
-	is.Executar(cpf, senhaCriptografada)
+	return is.Executar(cpf, senhaCriptografada)
 }
 
-// Executar (Login) -> recebe o input do usuário, criptografa e é compara com o valor que está no banco de dados
-// pela Interface de Serviço.
-//
-func (ia *InterfaceApresentacaoLogin) Executar(is ctrlServicos.InterfaceServico) {
+// Executar tenta entrar no sistema dado o CPF e a senha de um usuário.
+func (ial *InterfaceApresentacaoLogin) Executar(is servicos.InterfaceServico) bool {
 	cpf, senha := getUserData()
 
-	is.Executar(cpf, string(senha))
+	return is.Executar(cpf, string(senha))
 }
