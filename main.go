@@ -1,18 +1,10 @@
 package main
 
-import "fmt"
+import (
+	servicos "github.com/yuriserka/Engenharia_de_Software/backend/controladoras_servicos"
+)
 
-/* Executar para funcionar =>
- * $ go get ./...
- * $ go run .
- */
 func main() {
-	fmt.Println(func() string {
-		msg := func() string {
-			return "Vamos fazer tudo "
-		}() + func() string {
-			return "Funcional"
-		}()
-		return msg
-	}(), "UHU")
+	ctrlSControle := &servicos.ControladoraServicoControle{}
+	ctrlSControle.Build()
 }
