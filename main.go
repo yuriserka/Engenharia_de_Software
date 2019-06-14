@@ -1,10 +1,9 @@
 package main
 
 import (
-	servicos "github.com/yuriserka/Engenharia_de_Software/backend/controladoras_servicos"
+	ui "github.com/yuriserka/Engenharia_de_Software/UI"
 )
 
 func main() {
-	ctrlSControle := &servicos.ControladoraServicoControle{}
-	ctrlSControle.Build()
+	ui.Init()
 }

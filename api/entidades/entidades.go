@@ -1,7 +1,5 @@
 package entidades
 
-import "time"
-
 // Usuario é o principal ator do sistema.
 //
 // Qualquer usuário pode obter dados sobre os eventos, adicionar ou editar um evento que ele criou e
@@ -29,7 +27,7 @@ type Evento struct {
 type Apresentacao struct {
 	Codigo, Sala    string
 	Disponibilidade int
-	Data, Horario   time.Time
+	Data, Horario   string
 	Preco           float64
 }
 
