@@ -71,5 +71,7 @@ func cadastrar() {
 	cpf, senha := utils.GetUserData()
 	senhaCriptografada := utils.CriptografaSenha(senha)
 
-	controladoras.CadastrarNovoUsuario(cpf, senhaCriptografada)
+	if ok := controladoras.CadastrarNovoUsuario(cpf, senhaCriptografada); ok {
+		fmt.Println("Cadastrado com sucesso!")
+	}
 }

@@ -1,6 +1,8 @@
 package controladoras
 
 import (
+	"fmt"
+
 	"github.com/yuriserka/Engenharia_de_Software/api/repositorios"
 )
 
@@ -8,7 +10,8 @@ import (
 func CadastrarNovoUsuario(cpf, senha string) bool {
 	if u := repositorios.GetUsuario(cpf); u == nil {
 		repositorios.SetUsuario(cpf, senha)
+		return true
 	}
-
-	return true
+	fmt.Println("ja existe usuario cadastrado com este CPF")
+	return false
 }
