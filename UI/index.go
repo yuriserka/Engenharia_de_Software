@@ -10,18 +10,33 @@ import (
 
 // Init apresentará as opções de Login e Cadastro. É onde o programa começa.
 func Init() {
+	const (
+		login       = 1
+		cadastrarse = 2
+		sair        = 3
+	)
+	menu := map[int]string{
+		login:       "Fazer Login",
+		cadastrarse: "Cadastrar-se",
+		sair:        "Sair",
+	}
 	var opt int
-	for opt != 3 {
+	sortedIndexes := utils.OrdenaMap(menu)
+	for opt != sair {
 		utils.ClearScreen()
-		fmt.Print("\t\tSistema de Vendas de Ingressos\n", "Escolha uma das opções abaixo:\n")
-		fmt.Print("[1] login\n", "[2] cadastrar-se\n", "[3] sair\n", "\topção: ")
+		fmt.Print("\tBem vindo Ao sistema de venda de ingressos.\n", "Escolha uma das opções abaixo:\n")
 
+		for _, i := range sortedIndexes {
+			fmt.Printf("[%d] %s\n", i, menu[i])
+		}
+
+		fmt.Print("\tOpcao: ")
 		switch fmt.Scanf("%d\n", &opt); opt {
-		case 1:
+		case login:
 			if cpf, logado := entrar(); logado {
 				controleLogado(cpf)
 			}
-		case 2:
+		case cadastrarse:
 			cadastrar()
 			utils.Pause()
 		}
@@ -31,17 +46,32 @@ func Init() {
 // controleLogado apresentará as opções de gestão de Usuário e de Eventos. Só é acessível após o usuário ser
 // autenticado.
 func controleLogado(cpf string) {
+	const (
+		infoUsuario = 1
+		infoEventos = 2
+		voltar      = 3
+	)
+	menu := map[int]string{
+		infoUsuario: "Informacoes do Usuario",
+		infoEventos: "Visualizar Eventos",
+		voltar:      "Voltar",
+	}
 	var opt int
-	for opt != 3 {
+	sortedIndexes := utils.OrdenaMap(menu)
+	for opt != voltar {
 		utils.ClearScreen()
-		fmt.Print("\tBem vindo.\n", "Escolha uma das opções abaixo:\n")
-		fmt.Print("[1] Informacoes do Usuario\n", "[2] Visualizar Eventos\n", "[3] voltar\n", "\topção: ")
+		fmt.Print("\tBem vindo\n", "Escolha uma das opções abaixo:\n")
 
+		for _, i := range sortedIndexes {
+			fmt.Printf("[%d] %s\n", i, menu[i])
+		}
+
+		fmt.Print("\tOpcao: ")
 		switch fmt.Scanf("%d\n", &opt); opt {
-		case 1:
-			utils.Pause()
-		case 2:
-			utils.Pause()
+		case infoUsuario:
+			gestaoUsuario(cpf)
+		case infoEventos:
+			gestaoEventos(cpf)
 		}
 	}
 }
@@ -54,7 +84,7 @@ func entrar() (string, bool) {
 
 	cpf, senha := utils.GetUserData()
 
-	if logado := controladoras.Autenticar(cpf, string(senha)); !logado {
+	if autenticado := controladoras.Autenticar(cpf, string(senha)); !autenticado {
 		utils.Pause()
 		return "", false
 	}
@@ -74,4 +104,73 @@ func cadastrar() {
 	if ok := controladoras.CadastrarNovoUsuario(cpf, senhaCriptografada); ok {
 		fmt.Println("Cadastrado com sucesso!")
 	}
+}
+
+func gestaoUsuario(cpf string) {
+	const (
+		editarSenha       = 1
+		cadastrarCartao   = 2
+		visualizarCartoes = 3
+		excluirConta      = 4
+		voltar            = 5
+	)
+	menu := map[int]string{
+		editarSenha:       "Editar Senha",
+		cadastrarCartao:   "Cadastrar Cartao",
+		visualizarCartoes: "Visualizar Cartoes",
+		excluirConta:      "Excluir Conta",
+		voltar:            "Voltar",
+	}
+	var opt int
+	sortedIndexes := utils.OrdenaMap(menu)
+	for opt != voltar {
+		utils.ClearScreen()
+		fmt.Println("\tPerfil")
+		controladoras.MostrarUsuario(cpf)
+
+		for _, i := range sortedIndexes {
+			fmt.Printf("[%d] %s\n", i, menu[i])
+		}
+
+		fmt.Println("\tOpcao: ")
+		switch fmt.Scanf("%d\n", &opt); opt {
+		case editarSenha:
+			utils.NaoImplementado("Editar Senha")
+		case cadastrarCartao:
+			cadastrarCartoes(cpf)
+		case visualizarCartoes:
+			verCartoes(cpf)
+		case excluirConta:
+			utils.NaoImplementado("Excluir Conta")
+		}
+	}
+}
+
+func verCartoes(cpf string) {
+	utils.ClearScreen()
+	fmt.Println("\tVisualizando Cartões de Crédito")
+	controladoras.MostrarCartoes(cpf)
+	utils.Pause()
+}
+
+func cadastrarCartoes(cpf string) {
+	utils.ClearScreen()
+	fmt.Println("\tCadastro de Cartão de Crédito")
+	var (
+		num, cod, val string
+	)
+	fmt.Printf("numero do cartão: ")
+	fmt.Scanf("%s\n", &num)
+	fmt.Printf("coddigo do cartão: ")
+	fmt.Scanf("%s\n", &cod)
+	fmt.Printf("validade do cartão: ")
+	fmt.Scanf("%s\n", &val)
+
+	controladoras.CadastrarCartaoCredito(cpf, num, cod, val)
+	utils.Pause()
+}
+
+func gestaoEventos(cpf string) {
+	utils.ClearScreen()
+	fmt.Println("\tGestão dos Eventos")
 }
