@@ -2,7 +2,7 @@ package utils
 
 import "sort"
 
-// OderMapIntIndexes ordena os indices do map para que possa imprimir na ordem certa, é util
+// OrdenaMap ordena os indices do map para que possa imprimir na ordem certa, é util
 // para os menus
 func OrdenaMap(m map[int]string) []int {
 	sortedIndexes := make([]int, 0, len(m))

@@ -3,6 +3,7 @@ package repositorios
 import (
 	"github.com/yuriserka/Engenharia_de_Software/api/common"
 	"github.com/yuriserka/Engenharia_de_Software/api/entidades"
+	"github.com/yuriserka/Engenharia_de_Software/api/utils"
 )
 
 // SetUsuario insere um usuario no banco de dados de usuarios
@@ -16,29 +17,39 @@ func GetUsuario(cpf string) *entidades.Usuario {
 	return u
 }
 
+// UpdateUsuario atualiza a senha do usuario
+func UpdateUsuario(cpf, senha string) {
+	u := common.TabelaUsuario[cpf]
+	u.Senha = utils.CriptografaSenha([]byte(senha))
+	common.TabelaUsuario[cpf] = u
+}
+
 // SetCartao insere um cartao de credito para o usuario
 func SetCartao(cpf, num, cod, validade string) {
-	common.TabelaCartoesUsuario[cpf] = append(common.TabelaCartoesUsuario[cpf],
-		&entidades.CartaoDeCredito{
-			Numero:   num,
-			Codigo:   cod,
-			Validade: validade,
-		})
+	common.TabelaCartoesUsuario[cpf][num] = &entidades.CartaoDeCredito{
+		Numero:   num,
+		Codigo:   cod,
+		Validade: validade,
+	}
 }
 
 // GetCartao retorna um dos cartoes de credito do usuario
 func GetCartao(cpf, num string) *entidades.CartaoDeCredito {
-	arrCartao, _ := common.TabelaCartoesUsuario[cpf]
-	for _, c := range arrCartao {
-		if c.Numero == num {
-			return c
-		}
-	}
-	return nil
+	cartoes, _ := common.TabelaCartoesUsuario[cpf]
+	c, _ := cartoes[num]
+	return c
+}
+
+// UpdateCartao atualiza a data de validade do cartao
+func UpdateCartao(cpf, num, validade string) {
+	cartoes, _ := common.TabelaCartoesUsuario[cpf]
+	c, _ := cartoes[num]
+	c.Validade = validade
+	cartoes[num] = c
 }
 
 // GetCartoesUsuario retorna todos os cartoes de credito do usuario
-func GetCartoesUsuario(cpf string) []*entidades.CartaoDeCredito {
+func GetCartoesUsuario(cpf string) map[string]*entidades.CartaoDeCredito {
 	cs, _ := common.TabelaCartoesUsuario[cpf]
 	return cs
 }

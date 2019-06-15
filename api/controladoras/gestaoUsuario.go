@@ -49,3 +49,8 @@ func MostrarCartoes(cpf string) {
 		fmt.Println(strings.Repeat("-", 10))
 	}
 }
+
+// MudarSenha atualiza a senha do usuario
+func MudarSenha(cpf, senha string) {
+	repositorios.UpdateUsuario(cpf, senha)
+}

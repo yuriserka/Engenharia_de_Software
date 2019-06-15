@@ -11,18 +11,18 @@ import (
 // Init apresentará as opções de Login e Cadastro. É onde o programa começa.
 func Init() {
 	const (
-		login       = 1
-		cadastrarse = 2
-		sair        = 3
+		klogin     = 1
+		kcadastrar = 2
+		ksair      = 3
 	)
 	menu := map[int]string{
-		login:       "Fazer Login",
-		cadastrarse: "Cadastrar-se",
-		sair:        "Sair",
+		klogin:     "Fazer Login",
+		kcadastrar: "Cadastrar-se",
+		ksair:      "Sair",
 	}
 	var opt int
 	sortedIndexes := utils.OrdenaMap(menu)
-	for opt != sair {
+	for opt != ksair {
 		utils.ClearScreen()
 		fmt.Print("\tBem vindo Ao sistema de venda de ingressos.\n", "Escolha uma das opções abaixo:\n")
 
@@ -32,11 +32,11 @@ func Init() {
 
 		fmt.Print("\tOpcao: ")
 		switch fmt.Scanf("%d\n", &opt); opt {
-		case login:
+		case klogin:
 			if cpf, logado := entrar(); logado {
 				controleLogado(cpf)
 			}
-		case cadastrarse:
+		case kcadastrar:
 			cadastrar()
 			utils.Pause()
 		}
@@ -47,18 +47,18 @@ func Init() {
 // autenticado.
 func controleLogado(cpf string) {
 	const (
-		infoUsuario = 1
-		infoEventos = 2
-		voltar      = 3
+		kinfoUsuario = 1
+		kinfoEventos = 2
+		kvoltar      = 3
 	)
 	menu := map[int]string{
-		infoUsuario: "Informacoes do Usuario",
-		infoEventos: "Visualizar Eventos",
-		voltar:      "Voltar",
+		kinfoUsuario: "Informacoes do Usuario",
+		kinfoEventos: "Visualizar Eventos",
+		kvoltar:      "Voltar",
 	}
 	var opt int
 	sortedIndexes := utils.OrdenaMap(menu)
-	for opt != voltar {
+	for opt != kvoltar {
 		utils.ClearScreen()
 		fmt.Print("\tBem vindo\n", "Escolha uma das opções abaixo:\n")
 
@@ -68,9 +68,9 @@ func controleLogado(cpf string) {
 
 		fmt.Print("\tOpcao: ")
 		switch fmt.Scanf("%d\n", &opt); opt {
-		case infoUsuario:
+		case kinfoUsuario:
 			gestaoUsuario(cpf)
-		case infoEventos:
+		case kinfoEventos:
 			gestaoEventos(cpf)
 		}
 	}
@@ -99,31 +99,30 @@ func cadastrar() {
 	fmt.Println("\tCadastre-se")
 
 	cpf, senha := utils.GetUserData()
-	senhaCriptografada := utils.CriptografaSenha(senha)
 
-	if ok := controladoras.CadastrarNovoUsuario(cpf, senhaCriptografada); ok {
+	if ok := controladoras.CadastrarNovoUsuario(cpf, senha); ok {
 		fmt.Println("Cadastrado com sucesso!")
 	}
 }
 
 func gestaoUsuario(cpf string) {
 	const (
-		editarSenha       = 1
-		cadastrarCartao   = 2
-		visualizarCartoes = 3
-		excluirConta      = 4
-		voltar            = 5
+		keditarSenha       = 1
+		kcadastrarCartao   = 2
+		kvisualizarCartoes = 3
+		kexcluirConta      = 4
+		kvoltar            = 5
 	)
 	menu := map[int]string{
-		editarSenha:       "Editar Senha",
-		cadastrarCartao:   "Cadastrar Cartao",
-		visualizarCartoes: "Visualizar Cartoes",
-		excluirConta:      "Excluir Conta",
-		voltar:            "Voltar",
+		keditarSenha:       "Editar Senha",
+		kcadastrarCartao:   "Cadastrar Cartao",
+		kvisualizarCartoes: "Visualizar Cartoes",
+		kexcluirConta:      "Excluir Conta",
+		kvoltar:            "Voltar",
 	}
 	var opt int
 	sortedIndexes := utils.OrdenaMap(menu)
-	for opt != voltar {
+	for opt != kvoltar {
 		utils.ClearScreen()
 		fmt.Println("\tPerfil")
 		controladoras.MostrarUsuario(cpf)
@@ -132,21 +131,31 @@ func gestaoUsuario(cpf string) {
 			fmt.Printf("[%d] %s\n", i, menu[i])
 		}
 
-		fmt.Println("\tOpcao: ")
+		fmt.Print("\tOpcao: ")
 		switch fmt.Scanf("%d\n", &opt); opt {
-		case editarSenha:
-			utils.NaoImplementado("Editar Senha")
-		case cadastrarCartao:
+		case keditarSenha:
+			editarSenha(cpf)
+		case kcadastrarCartao:
 			cadastrarCartoes(cpf)
-		case visualizarCartoes:
-			verCartoes(cpf)
-		case excluirConta:
+		case kvisualizarCartoes:
+			visualizarCartoes(cpf)
+		case kexcluirConta:
 			utils.NaoImplementado("Excluir Conta")
 		}
 	}
 }
 
-func verCartoes(cpf string) {
+func editarSenha(cpf string) {
+	utils.ClearScreen()
+	fmt.Println("\tEdite sua Senha")
+	var novaSenha string
+	fmt.Printf("Digite a nova senha: ")
+	fmt.Scanf("%s\n", &novaSenha)
+	controladoras.MudarSenha(cpf, novaSenha)
+	utils.Pause()
+}
+
+func visualizarCartoes(cpf string) {
 	utils.ClearScreen()
 	fmt.Println("\tVisualizando Cartões de Crédito")
 	controladoras.MostrarCartoes(cpf)
@@ -171,6 +180,5 @@ func cadastrarCartoes(cpf string) {
 }
 
 func gestaoEventos(cpf string) {
-	utils.ClearScreen()
-	fmt.Println("\tGestão dos Eventos")
+	utils.NaoImplementado("Gestao de Eventos")
 }
