@@ -15,7 +15,9 @@ func cadastrarUsuario() {
 
 	cpf, senha := utils.GetUserData()
 
-	if ok := controladoras.CadastrarNovoUsuario(cpf, senha); ok {
+	if erro := controladoras.CadastrarNovoUsuario(cpf, senha); erro != nil {
+		fmt.Println(erro.Error())
+	} else {
 		fmt.Println("Cadastrado com sucesso!")
 	}
 	utils.Pause()

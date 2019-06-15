@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/yuriserka/Engenharia_de_Software/api/controladoras"
 	"github.com/yuriserka/Engenharia_de_Software/api/utils"
@@ -29,7 +30,7 @@ func gestaoUsuario(cpf string) {
 	for opt != kvoltar {
 		utils.ClearScreen()
 		fmt.Println("\tPerfil")
-		controladoras.MostrarUsuario(cpf)
+		fmt.Println(controladoras.RecuperarUsuario(cpf))
 
 		for _, i := range sortedIndexes {
 			fmt.Printf("[%d] %s\n", i, menu[i])
@@ -53,18 +54,28 @@ func gestaoUsuario(cpf string) {
 
 func editarSenha(cpf string) {
 	utils.ClearScreen()
+
 	fmt.Println("\tEdite sua Senha")
 	var novaSenha string
 	fmt.Printf("Digite a nova senha: ")
 	fmt.Scanf("%s\n", &novaSenha)
 	controladoras.MudarSenha(cpf, novaSenha)
+
+	fmt.Println("Sucesso ao mudar senha")
 	utils.Pause()
 }
 
 func visualizarCartoes(cpf string) {
 	utils.ClearScreen()
 	fmt.Printf("\tVisualizando Cartões de Crédito\n\n")
-	controladoras.MostrarCartoes(cpf)
+
+	ccs := controladoras.RecuperarCartoesDeCredito(cpf)
+	for _, cartao := range ccs {
+		fmt.Println(strings.Repeat("-", 10))
+		fmt.Printf("Numero: %s\nCódigo %s\nValidade: %s\n", cartao.Numero, cartao.Codigo, cartao.Validade)
+	}
+	fmt.Println()
+
 	utils.Pause()
 }
 
@@ -74,6 +85,7 @@ func cadastrarCartoes(cpf string) {
 	var (
 		num, cod, val string
 	)
+
 	fmt.Printf("numero: ")
 	fmt.Scanf("%s\n", &num)
 	fmt.Printf("coddigo: ")
@@ -81,13 +93,26 @@ func cadastrarCartoes(cpf string) {
 	fmt.Printf("validade: ")
 	fmt.Scanf("%s\n", &val)
 
-	controladoras.CadastrarCartaoCredito(cpf, num, cod, val)
+	if erro := controladoras.CadastrarCartaoCredito(cpf, num, cod, val); erro != nil {
+		fmt.Println(erro.Error())
+	} else {
+		fmt.Println("Cartão cadastrado com sucesso")
+	}
+
 	utils.Pause()
 }
 
 func visualizarEventos(cpf string) {
 	utils.ClearScreen()
 	fmt.Printf("\tVisualizando Eventos Criados\n\n")
-	controladoras.MostrarEventosUsuario(cpf)
+
+	eventos := controladoras.RecuperarEventosUsuario(cpf)
+	for _, e := range eventos {
+		fmt.Println(strings.Repeat("-", 10))
+		fmt.Printf("Codigo: %s\nNome: %s\nLocal: %s\nClassificação: %s\nTipo: %s\n", e.Codigo,
+			e.Nome, e.Cidade+"-"+e.Estado, e.Classificacao, e.Tipo)
+	}
+	fmt.Println()
+
 	utils.Pause()
 }

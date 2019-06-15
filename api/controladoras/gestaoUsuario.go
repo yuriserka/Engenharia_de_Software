@@ -1,17 +1,18 @@
 package controladoras
 
 import (
-	"fmt"
 	"strings"
+
+	"github.com/yuriserka/Engenharia_de_Software/api/entidades"
 
 	"github.com/yuriserka/Engenharia_de_Software/api/repositorios"
 )
 
-// MostrarUsuario mostra o CPF do usuario de forma bonita,
+// RecuperarUsuario mostra o CPF do usuario de forma bonita,
 // se não tiver ponto ele imprime do mesmo jeito, mas errado
-func MostrarUsuario(cpf string) {
+func RecuperarUsuario(cpf string) string {
 	u := repositorios.GetUsuario(cpf)
-	splitAfterN := func() (substr []string) {
+	splitAfterN := func(n int) (substr []string) {
 		a := []rune(u.Cpf)
 		var res string
 		for i, r := range a {
@@ -19,39 +20,30 @@ func MostrarUsuario(cpf string) {
 			if i == len(cpf)-1 {
 				substr = append(substr, res)
 				res = ""
-			} else if i > 0 && (i+1)%3 == 0 {
+			} else if i > 0 && (i+1)%n == 0 {
 				substr = append(substr, res)
 				res = ""
 			}
 		}
 		return
 	}
-	cpfComPonto := strings.Join(splitAfterN(), ".")
+	cpfComPonto := strings.Join(splitAfterN(3), ".")
 	idx := strings.LastIndex(cpfComPonto, ".")
 	if idx == -1 {
-		fmt.Println("CPF:", cpfComPonto)
-		return
+		return cpfComPonto
 	}
 	cpfCorreto := cpfComPonto[:idx] + strings.Replace(cpfComPonto[idx:], ".", "-", 1)
-	fmt.Println("CPF:", cpfCorreto)
+	return cpfCorreto
 }
 
 // CadastrarCartaoCredito Adiciona um cartao para o usuario
-func CadastrarCartaoCredito(cpf, numCartao, codCartao, valCartao string) {
-	erro := repositorios.SetCartao(cpf, numCartao, codCartao, valCartao)
-	if erro != nil {
-		fmt.Println(erro.Error())
-	}
+func CadastrarCartaoCredito(cpf, numCartao, codCartao, valCartao string) error {
+	return repositorios.SetCartao(cpf, numCartao, codCartao, valCartao)
 }
 
-// MostrarCartoes mostra todos os cartoes que o usuario tem cadastrado
-func MostrarCartoes(cpf string) {
-	cartoes := repositorios.GetCartoesUsuario(cpf)
-	for _, cartao := range cartoes {
-		fmt.Println(strings.Repeat("-", 10))
-		fmt.Printf("Numero: %s\nCódigo %s\nValidade: %s\n", cartao.Numero, cartao.Codigo, cartao.Validade)
-	}
-	fmt.Println()
+// RecuperarCartoesDeCredito mostra todos os cartoes que o usuario tem cadastrado
+func RecuperarCartoesDeCredito(cpf string) map[string]*entidades.CartaoDeCredito {
+	return repositorios.GetCartoesUsuario(cpf)
 }
 
 // MudarSenha atualiza a senha do usuario
@@ -59,14 +51,12 @@ func MudarSenha(cpf, senha string) {
 	repositorios.UpdateUsuario(cpf, senha)
 }
 
-// MostrarEventosUsuario imprime os eventos que o usuario criou
-func MostrarEventosUsuario(cpf string) {
-	eventos := repositorios.GetEventosUsuario(cpf)
-	for _, codEvento := range eventos {
-		fmt.Println(strings.Repeat("-", 10))
-		evento := repositorios.GetEvento(codEvento)
-		fmt.Printf("Codigo: %s\nNome: %s\nLocal: %s\nClassificação: %s\nTipo: %s\n", evento.Codigo,
-			evento.Nome, evento.Cidade+"-"+evento.Estado, evento.Classificacao, evento.Tipo)
+// RecuperarEventosUsuario imprime os eventos que o usuario criou
+func RecuperarEventosUsuario(cpf string) []*entidades.Evento {
+	codEventos := repositorios.GetEventosUsuario(cpf)
+	eventos := make([]*entidades.Evento, 0, len(codEventos))
+	for _, cod := range codEventos {
+		eventos = append(eventos, repositorios.GetEvento(cod))
 	}
-	fmt.Println()
+	return eventos
 }

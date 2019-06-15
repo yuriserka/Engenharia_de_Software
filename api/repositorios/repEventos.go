@@ -1,6 +1,8 @@
 package repositorios
 
 import (
+	"errors"
+
 	"github.com/yuriserka/Engenharia_de_Software/api/common"
 	"github.com/yuriserka/Engenharia_de_Software/api/entidades"
 )
@@ -18,18 +20,17 @@ func SetEvento(codigo, nome, cidade, estado, tipo, classificacao string) {
 }
 
 // SetEventoUsuario tenta adicionar mais um evento para o usuario, se tiver mais que 5 retorna erro
-func SetEventoUsuario(cpf, codigo string) bool {
+func SetEventoUsuario(cpf, codigo string) error {
 	if len(common.TabelaEventoUsuario[cpf]) > 5 {
-		return false
+		return errors.New("um usuário pode gerenciar somente 5 eventos por vez")
 	}
 	common.TabelaEventoUsuario[cpf] = append(common.TabelaEventoUsuario[cpf], codigo)
-	return true
+	return nil
 }
 
 // GetEvento retorna um Evento no banco de dados
 func GetEvento(cod string) *entidades.Evento {
-	e, _ := common.TabelaEventos[cod]
-	return e
+	return common.TabelaEventos[cod]
 }
 
 // GetTodosEventos retorna todos os Eventos do banco de dados

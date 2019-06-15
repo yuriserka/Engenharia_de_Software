@@ -51,8 +51,7 @@ func SetCartao(cpf, num, cod, validade string) error {
 // GetCartao retorna um dos cartoes de credito do usuario
 func GetCartao(cpf, num string) *entidades.CartaoDeCredito {
 	cartoes, _ := common.TabelaCartoesUsuario[cpf]
-	c, _ := cartoes[num]
-	return c
+	return cartoes[num]
 }
 
 // UpdateCartao atualiza a data de validade do cartao
@@ -65,12 +64,10 @@ func UpdateCartao(cpf, num, validade string) {
 
 // GetCartoesUsuario retorna todos os cartoes de credito do usuario
 func GetCartoesUsuario(cpf string) map[string]*entidades.CartaoDeCredito {
-	cartoes, _ := common.TabelaCartoesUsuario[cpf]
-	return cartoes
+	return common.TabelaCartoesUsuario[cpf]
 }
 
-// GetEventosUsuario retorna todos os eventos criados pelo usuario
+// GetEventosUsuario retorna todos os codigos de eventos criados pelo usuario
 func GetEventosUsuario(cpf string) []string {
-	eventos, _ := common.TabelaEventoUsuario[cpf]
-	return eventos
+	return common.TabelaEventoUsuario[cpf]
 }

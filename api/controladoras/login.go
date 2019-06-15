@@ -1,7 +1,7 @@
 package controladoras
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/yuriserka/Engenharia_de_Software/api/repositorios"
 
@@ -9,14 +9,12 @@ import (
 )
 
 // Autenticar verifica se os dados do usuário estão no banco de dados. Retorna se foi possível autenticar.
-func Autenticar(cpf, senha string) bool {
+func Autenticar(cpf, senha string) error {
 	if u := repositorios.GetUsuario(cpf); u != nil {
 		if !utils.ValidaSenha(u.Senha, senha) {
-			fmt.Println("Senha incorreta.")
-			return false
+			return errors.New("senha incorreta")
 		}
-		return true
+		return nil
 	}
-	fmt.Println("Usuario nao cadastrado ainda.")
-	return false
+	return errors.New("usuario nao cadastrado ainda")
 }

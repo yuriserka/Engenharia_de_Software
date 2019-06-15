@@ -15,7 +15,8 @@ func entrar() (string, bool) {
 
 	cpf, senha := utils.GetUserData()
 
-	if autenticado := controladoras.Autenticar(cpf, string(senha)); !autenticado {
+	if erro := controladoras.Autenticar(cpf, string(senha)); erro != nil {
+		fmt.Println(erro.Error())
 		utils.Pause()
 		return "", false
 	}
