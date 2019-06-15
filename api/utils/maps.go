@@ -1,11 +1,6 @@
 package utils
 
-import (
-	"fmt"
-	"sort"
-
-	"github.com/yuriserka/Engenharia_de_Software/api/entidades"
-)
+import "sort"
 
 // OrdenaMap ordena os indices do map para que possa imprimir na ordem certa, é util
 // para os menus
