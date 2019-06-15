@@ -18,18 +18,3 @@ func OrdenaMap(m map[int]string) []int {
 
 	return sortedIndexes
 }
-
-func AddCartaoCredito(m map[string]map[string]*entidades.CartaoDeCredito, key1,
-	key2 string, obj *entidades.CartaoDeCredito) {
-	mm, existe := m[key1]
-	if !existe {
-		mm = make(map[string]*entidades.CartaoDeCredito)
-		m[key1] = mm
-	}
-	_, ok := mm[key2]
-	if !ok {
-		mm[key2] = obj
-	} else {
-		fmt.Println("Cartao ja cadastrado")
-	}
-}
