@@ -38,19 +38,35 @@ func MostrarUsuario(cpf string) {
 
 // CadastrarCartaoCredito Adiciona um cartao para o usuario
 func CadastrarCartaoCredito(cpf, numCartao, codCartao, valCartao string) {
-	repositorios.SetCartao(cpf, numCartao, codCartao, valCartao)
+	erro := repositorios.SetCartao(cpf, numCartao, codCartao, valCartao)
+	if erro != nil {
+		fmt.Println(erro.Error())
+	}
 }
 
 // MostrarCartoes mostra todos os cartoes que o usuario tem cadastrado
 func MostrarCartoes(cpf string) {
 	cartoes := repositorios.GetCartoesUsuario(cpf)
 	for _, cartao := range cartoes {
-		fmt.Printf("Numero: %s\nCódigo %s\nValidade: %s\n", cartao.Numero, cartao.Codigo, cartao.Validade)
 		fmt.Println(strings.Repeat("-", 10))
+		fmt.Printf("Numero: %s\nCódigo %s\nValidade: %s\n", cartao.Numero, cartao.Codigo, cartao.Validade)
 	}
+	fmt.Println()
 }
 
 // MudarSenha atualiza a senha do usuario
 func MudarSenha(cpf, senha string) {
 	repositorios.UpdateUsuario(cpf, senha)
+}
+
+// MostrarEventosUsuario imprime os eventos que o usuario criou
+func MostrarEventosUsuario(cpf string) {
+	eventos := repositorios.GetEventosUsuario(cpf)
+	for _, codEvento := range eventos {
+		fmt.Println(strings.Repeat("-", 10))
+		evento := repositorios.GetEvento(codEvento)
+		fmt.Printf("Codigo: %s\nNome: %s\nLocal: %s\nClassificação: %s\nTipo: %s\n", evento.Codigo,
+			evento.Nome, evento.Cidade+"-"+evento.Estado, evento.Classificacao, evento.Tipo)
+	}
+	fmt.Println()
 }

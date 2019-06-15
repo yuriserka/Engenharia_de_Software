@@ -1,7 +1,7 @@
 package main
 
 import (
-	ui "github.com/yuriserka/Engenharia_de_Software/UI"
+	"github.com/yuriserka/Engenharia_de_Software/ui"
 )
 
 func main() {

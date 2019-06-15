@@ -1,6 +1,8 @@
 package repositorios
 
 import (
+	"errors"
+
 	"github.com/yuriserka/Engenharia_de_Software/api/common"
 	"github.com/yuriserka/Engenharia_de_Software/api/entidades"
 	"github.com/yuriserka/Engenharia_de_Software/api/utils"
@@ -8,7 +10,10 @@ import (
 
 // SetUsuario insere um usuario no banco de dados de usuarios
 func SetUsuario(cpf, senha string) {
-	common.TabelaUsuario[cpf] = &entidades.Usuario{Cpf: cpf, Senha: senha}
+	common.TabelaUsuario[cpf] = &entidades.Usuario{
+		Cpf:   cpf,
+		Senha: senha,
+	}
 }
 
 // GetUsuario retorna um usuario se ele existir no banco de dados de usuarios
@@ -25,12 +30,22 @@ func UpdateUsuario(cpf, senha string) {
 }
 
 // SetCartao insere um cartao de credito para o usuario
-func SetCartao(cpf, num, cod, validade string) {
-	common.TabelaCartoesUsuario[cpf][num] = &entidades.CartaoDeCredito{
-		Numero:   num,
-		Codigo:   cod,
-		Validade: validade,
+func SetCartao(cpf, num, cod, validade string) error {
+	mapCartao, existe := common.TabelaCartoesUsuario[cpf]
+	if !existe {
+		mapCartao = make(map[string]*entidades.CartaoDeCredito)
+		common.TabelaCartoesUsuario[cpf] = mapCartao
 	}
+	if _, ok := mapCartao[num]; !ok {
+		mapCartao[num] = &entidades.CartaoDeCredito{
+			Numero:   num,
+			Codigo:   cod,
+			Validade: validade,
+		}
+	} else {
+		return errors.New("Cartão ja cadastrado")
+	}
+	return nil
 }
 
 // GetCartao retorna um dos cartoes de credito do usuario
@@ -50,6 +65,12 @@ func UpdateCartao(cpf, num, validade string) {
 
 // GetCartoesUsuario retorna todos os cartoes de credito do usuario
 func GetCartoesUsuario(cpf string) map[string]*entidades.CartaoDeCredito {
-	cs, _ := common.TabelaCartoesUsuario[cpf]
-	return cs
+	cartoes, _ := common.TabelaCartoesUsuario[cpf]
+	return cartoes
+}
+
+// GetEventosUsuario retorna todos os eventos criados pelo usuario
+func GetEventosUsuario(cpf string) []string {
+	eventos, _ := common.TabelaEventoUsuario[cpf]
+	return eventos
 }
