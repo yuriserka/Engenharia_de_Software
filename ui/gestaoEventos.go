@@ -1,9 +1,7 @@
 package ui
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
@@ -56,22 +54,20 @@ func cadastrarEvento(cpf string) {
 	utils.ClearScreen()
 	fmt.Printf("\tCadastro de Evento\n\n")
 
-	reader := bufio.NewReader(os.Stdin)
+	v := struct {
+		Cod, Nome, Estado, Cidade, Tipo, Classificacao string
+	}{}
 
-	fmt.Printf("Codigo: ")
-	cod := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Printf("Nome: ")
-	nome := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Printf("Estado: ")
-	estado := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Printf("Cidade: ")
-	cidade := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Printf("Tipo: ")
-	tipo := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Printf("Classificação: ")
-	classificacao := utils.RemoverFimDeLinha(reader.ReadString('\n'))
+	utils.GetNStringInputs(&v, []string{
+		"Código",
+		"Nome",
+		"Estado",
+		"Cidade",
+		"Tipo",
+		"Classificação",
+	}, 6)
 
-	erro := controladoras.CadastrarNovoEvento(cpf, cod, nome, cidade, estado, tipo, classificacao)
+	erro := controladoras.CadastrarNovoEvento(cpf, v.Cod, v.Nome, v.Cidade, v.Estado, v.Tipo, v.Classificacao)
 	if erro != nil {
 		fmt.Println(erro.Error())
 	} else {
@@ -114,29 +110,26 @@ func cadastrarApresentacao() {
 
 	utils.ClearScreen()
 
-	reader := bufio.NewReader(os.Stdin)
+	v := struct {
+		Codigo, Sala, Disponibilidade, Data, Horario, Preco string
+	}{}
 
-	fmt.Printf("\tCadastrando Apresentação para o Evento: %s\n\n", e.Nome)
-	fmt.Print("Codigo: ")
-	codigo := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Print("Sala: ")
-	sala := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Print("Disponibilidade: ")
-	disponibilidade := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Print("Data: ")
-	data := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Print("Horario: ")
-	horario := utils.RemoverFimDeLinha(reader.ReadString('\n'))
-	fmt.Print("Preco: ")
-	preco := utils.RemoverFimDeLinha(reader.ReadString('\n'))
+	utils.GetNStringInputs(&v, []string{
+		"Código",
+		"Sala",
+		"Disponibilidade",
+		"Data",
+		"Horário",
+		"Preço",
+	}, 6)
 
-	disp, _ := strconv.Atoi(disponibilidade)
-	pr, _ := strconv.ParseFloat(preco, 64)
-	erro := controladoras.CadastrarNovaApresentacao(codigo, sala, disp, data, horario, pr)
+	disp, _ := strconv.Atoi(v.Disponibilidade)
+	pr, _ := strconv.ParseFloat(v.Preco, 64)
+	erro := controladoras.CadastrarNovaApresentacao(v.Codigo, v.Sala, disp, v.Data, v.Horario, pr)
 	if erro != nil {
 		fmt.Println(erro.Error())
 	} else {
-		a := controladoras.RecuperarApresentacao(codigo)
+		a := controladoras.RecuperarApresentacao(v.Codigo)
 		if err := controladoras.LigarApresentacaoEvento(cod, a); err != nil {
 			fmt.Println(err.Error())
 		}
