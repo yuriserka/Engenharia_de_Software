@@ -20,3 +20,9 @@ func GetUserData() (cpf string, senha []byte) {
 
 	return
 }
+
+// RemoverFimDeLinha remove o \n quando esta pegando input do usuario
+func RemoverFimDeLinha(s string, err error) string {
+	s = s[:len(s)-2]
+	return s
+}

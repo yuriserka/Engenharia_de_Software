@@ -72,7 +72,7 @@ func visualizarCartoes(cpf string) {
 	ccs := controladoras.RecuperarCartoesDeCredito(cpf)
 	for _, cartao := range ccs {
 		fmt.Println(strings.Repeat("-", 10))
-		fmt.Printf("Numero: %s\nCódigo %s\nValidade: %s\n", cartao.Numero, cartao.Codigo, cartao.Validade)
+		fmt.Print(cartao.ToString())
 	}
 	fmt.Println()
 

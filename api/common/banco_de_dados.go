@@ -13,4 +13,8 @@ var (
 	TabelaEventos = make(map[string]*entidades.Evento)
 	// TabelaEventoUsuario é uma stub para a relação entre usuario e Evento
 	TabelaEventoUsuario = make(map[string][]string)
+	// TabelaApresentacoes é uma stub para a tabela de aresentações
+	TabelaApresentacoes = make(map[string]*entidades.Apresentacao)
+	// TabelaEventosApresentacoes é uma stub para a relação de evento com apresentação
+	TabelaEventosApresentacoes = make(map[string]map[string]*entidades.Apresentacao)
 )

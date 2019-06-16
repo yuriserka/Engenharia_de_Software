@@ -47,3 +47,38 @@ func UpdateEvento(cod, nome, class, estado, tipo string) {
 	e.Tipo = tipo
 	common.TabelaEventos[cod] = e
 }
+
+// SetApresentacao insere uma apresentação no banco de dados
+func SetApresentacao(codigo, sala string, disponibilidade int, data, horario string, preco float64) error {
+	if a, _ := common.TabelaApresentacoes[codigo]; a != nil {
+		return errors.New("Ja existe uma apresentação com este codigo")
+	}
+	common.TabelaApresentacoes[codigo] = &entidades.Apresentacao{
+		Codigo:          codigo,
+		Sala:            sala,
+		Disponibilidade: disponibilidade,
+		Data:            data,
+		Horario:         horario,
+		Preco:           preco,
+	}
+	return nil
+}
+
+// GetApresentacao retorna uma apresentação do banco de dados
+func GetApresentacao(cod string) *entidades.Apresentacao {
+	return common.TabelaApresentacoes[cod]
+}
+
+// SetApresentacaoEvento faz a relação entre envento e apresentação
+func SetApresentacaoEvento(codigoEvento string, a *entidades.Apresentacao) error {
+	if _, ok := common.TabelaApresentacoes[a.Codigo]; ok {
+		common.TabelaEventosApresentacoes[codigoEvento] = common.TabelaApresentacoes
+		return nil
+	}
+	return errors.New("Apresentação não cadastrada ainda")
+}
+
+// GetApresentacoes retorna todas as apresentações do banco de dados
+func GetApresentacoes(codigoEvento string) map[string]*entidades.Apresentacao {
+	return common.TabelaEventosApresentacoes[codigoEvento]
+}
