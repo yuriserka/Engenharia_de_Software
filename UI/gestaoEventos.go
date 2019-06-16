@@ -85,18 +85,6 @@ func visualizarTodosEventos() {
 	fmt.Printf("\tVisualizando Todos so Eventos\n\n")
 
 	eventos := controladoras.RecuperarEventos()
-	for _, e := range eventos {
-		fmt.Println(strings.Repeat("-", 10))
-		fmt.Println(e.ToString())
-	}
-	fmt.Println()
-}
-
-func cadastrarApresentacao() {
-	utils.ClearScreen()
-	fmt.Printf("\tVisualizando Todos os Eventos\n\n")
-
-	eventos := controladoras.RecuperarEventos()
 	if len(eventos) == 0 {
 		fmt.Println("Ainda não há eventos cadastrados")
 		utils.Pause()
@@ -107,6 +95,10 @@ func cadastrarApresentacao() {
 		fmt.Println(e.ToString())
 	}
 	fmt.Println()
+}
+
+func cadastrarApresentacao() {
+	visualizarTodosEventos()
 
 	fmt.Printf("\tEscolha um Evento pelo Código\n\n")
 	var cod string
@@ -150,24 +142,12 @@ func cadastrarApresentacao() {
 		}
 		fmt.Println("Apresentação cadastrada com sucesso")
 	}
+
 	utils.Pause()
 }
 
 func visualizarApresentacoes() {
-	utils.ClearScreen()
-	fmt.Printf("\tVisualizando Todos os Eventos\n\n")
-
-	eventos := controladoras.RecuperarEventos()
-	if len(eventos) == 0 {
-		fmt.Println("Ainda não há eventos cadastrados")
-		utils.Pause()
-		return
-	}
-	for _, e := range eventos {
-		fmt.Println(strings.Repeat("-", 10))
-		fmt.Println(e.ToString())
-	}
-	fmt.Println()
+	visualizarTodosEventos()
 
 	fmt.Printf("\tEscolha um Evento pelo Código\n\n")
 	var cod string

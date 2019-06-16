@@ -21,10 +21,12 @@ func SetEvento(codigo, nome, cidade, estado, tipo, classificacao string) {
 
 // SetEventoUsuario tenta adicionar mais um evento para o usuario, se tiver mais que 5 retorna erro
 func SetEventoUsuario(cpf, codigo string) error {
-	if len(common.TabelaEventoUsuario[cpf]) > 5 {
+	common.TabelaEventoUsuario[cpf] = append(common.TabelaEventoUsuario[cpf], codigo)
+	size := len(common.TabelaEventoUsuario[cpf])
+	if size > 5 {
+		common.TabelaEventoUsuario[cpf] = common.TabelaEventoUsuario[cpf][:size-1]
 		return errors.New("um usuário pode gerenciar somente 5 eventos por vez")
 	}
-	common.TabelaEventoUsuario[cpf] = append(common.TabelaEventoUsuario[cpf], codigo)
 	return nil
 }
 
@@ -71,11 +73,17 @@ func GetApresentacao(cod string) *entidades.Apresentacao {
 
 // SetApresentacaoEvento faz a relação entre envento e apresentação
 func SetApresentacaoEvento(codigoEvento string, a *entidades.Apresentacao) error {
-	if _, ok := common.TabelaApresentacoes[a.Codigo]; ok {
-		common.TabelaEventosApresentacoes[codigoEvento] = common.TabelaApresentacoes
-		return nil
+	mapApresentacao, existe := common.TabelaEventosApresentacoes[codigoEvento]
+	if !existe {
+		mapApresentacao = make(map[string]*entidades.Apresentacao)
+		common.TabelaEventosApresentacoes[codigoEvento] = mapApresentacao
 	}
-	return errors.New("Apresentação não cadastrada ainda")
+	if _, ok := mapApresentacao[a.Codigo]; !ok {
+		mapApresentacao[a.Codigo] = a
+	} else {
+		return errors.New("Apresentação ja cadastrada")
+	}
+	return nil
 }
 
 // GetApresentacoes retorna todas as apresentações do banco de dados
