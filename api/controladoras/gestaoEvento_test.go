@@ -5,7 +5,7 @@ import (
 )
 
 func TestCadastrarNovoEvento(t *testing.T){
-	cpf := "123456789"
+	cpf := "01234567890"
 	codigo := "1"
 	nome := "Eventao"
 	cidade := "Brasília"

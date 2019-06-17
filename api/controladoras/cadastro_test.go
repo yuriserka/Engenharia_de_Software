@@ -5,7 +5,7 @@ import (
 )
 
 func TestCadastrarNovoUsuario(t *testing.T){
-	cpf := "123456789"
+	cpf := "01234567890"
 	senha := []byte{1,2,3,4,5}
 
 	// Testa cadastro de novo usuário, deve retornar nil no sucesso do cadastro
@@ -21,7 +21,7 @@ func TestCadastrarNovoUsuario(t *testing.T){
 	}
 
 	// Testa cadastro de outro usuário novo após já ter um cadastro, deve retornar nil no sucesso
-	cpf = "987654321"
+	cpf = "09876543210"
 	got = CadastrarNovoUsuario(cpf, senha)
 	if got != nil {
 		t.Errorf("[3] CadastrarNovoUsuario(%s, %v) = %v; want error", cpf, senha, got)
