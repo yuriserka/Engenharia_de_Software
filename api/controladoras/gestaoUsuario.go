@@ -8,12 +8,16 @@ import (
 	"github.com/yuriserka/Engenharia_de_Software/api/repositorios"
 )
 
-// RecuperarUsuario mostra o CPF do usuario de forma bonita,
+// RecuperarUsuario retorna o usuário do banco de dados com o cpf passado
+func RecuperarUsuario(cpf string) (*entidades.Usuario, error) {
+	return repositorios.GetUsuario(cpf)
+}
+
+// RecuperarCpfFormatado mostra o CPF do usuario de forma bonita,
 // se não tiver ponto ele imprime do mesmo jeito, mas errado
-func RecuperarUsuario(cpf string) string {
-	u := repositorios.GetUsuario(cpf)
+func RecuperarCpfFormatado(cpf string) string {
 	splitAfterN := func(n int) (substr []string) {
-		a := []rune(u.Cpf)
+		a := []rune(cpf)
 		var res string
 		for i, r := range a {
 			res = res + string(r)
@@ -42,7 +46,7 @@ func CadastrarCartaoCredito(cpf, numCartao, codCartao, valCartao string) error {
 }
 
 // RecuperarCartoesDeCredito mostra todos os cartoes que o usuario tem cadastrado
-func RecuperarCartoesDeCredito(cpf string) map[string]*entidades.CartaoDeCredito {
+func RecuperarCartoesDeCredito(cpf string) (map[string]*entidades.CartaoDeCredito, error) {
 	return repositorios.GetCartoesUsuario(cpf)
 }
 
@@ -52,11 +56,18 @@ func MudarSenha(cpf, senha string) {
 }
 
 // RecuperarEventosUsuario imprime os eventos que o usuario criou
-func RecuperarEventosUsuario(cpf string) []*entidades.Evento {
-	codEventos := repositorios.GetEventosUsuario(cpf)
+func RecuperarEventosUsuario(cpf string) ([]*entidades.Evento, error) {
+	codEventos, e1 := repositorios.GetEventosUsuario(cpf)
+	if e1 != nil {
+		return nil, e1
+	}
 	eventos := make([]*entidades.Evento, 0, len(codEventos))
 	for _, cod := range codEventos {
-		eventos = append(eventos, repositorios.GetEvento(cod))
+		ev, e2 := repositorios.GetEvento(cod)
+		if e2 != nil {
+			return nil, e2
+		}
+		eventos = append(eventos, ev)
 	}
-	return eventos
+	return eventos, nil
 }

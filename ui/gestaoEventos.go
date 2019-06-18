@@ -76,34 +76,37 @@ func cadastrarEvento(cpf string) {
 	utils.Pause()
 }
 
-func visualizarTodosEventos() {
+func visualizarTodosEventos() error {
 	utils.ClearScreen()
 	fmt.Printf("\tVisualizando Todos so Eventos\n\n")
 
-	eventos := controladoras.RecuperarEventos()
-	if len(eventos) == 0 {
-		fmt.Println("Ainda não há eventos cadastrados")
-		utils.Pause()
-		return
+	eventos, e1 := controladoras.RecuperarEventos()
+	if e1 != nil {
+		fmt.Println(e1.Error())
+		return e1
 	}
 	for _, e := range eventos {
 		fmt.Println(strings.Repeat("-", 10))
 		fmt.Println(e.ToString())
 	}
 	fmt.Println()
+	return nil
 }
 
 func cadastrarApresentacao() {
-	visualizarTodosEventos()
+	if noEvents := visualizarTodosEventos(); noEvents != nil {
+		utils.Pause()
+		return
+	}
 
 	fmt.Printf("\tEscolha um Evento pelo Código\n\n")
 	var cod string
 	fmt.Printf("codigo: ")
 	fmt.Scanf("%s\n", &cod)
 
-	e := controladoras.RecuperarEvento(cod)
-	if e == nil {
-		fmt.Println("Escolha uma opção válida")
+	_, err := controladoras.RecuperarEvento(cod)
+	if err != nil {
+		fmt.Println(err.Error())
 		utils.Pause()
 		return
 	}
@@ -129,9 +132,14 @@ func cadastrarApresentacao() {
 	if erro != nil {
 		fmt.Println(erro.Error())
 	} else {
-		a := controladoras.RecuperarApresentacao(v.Codigo)
+		a, e1 := controladoras.RecuperarApresentacao(v.Codigo)
+		if e1 != nil {
+			fmt.Println(e1.Error())
+			return
+		}
 		if err := controladoras.LigarApresentacaoEvento(cod, a); err != nil {
 			fmt.Println(err.Error())
+			return
 		}
 		fmt.Println("Apresentação cadastrada com sucesso")
 	}
@@ -140,19 +148,32 @@ func cadastrarApresentacao() {
 }
 
 func visualizarApresentacoes() {
-	visualizarTodosEventos()
+	if noEvents := visualizarTodosEventos(); noEvents != nil {
+		utils.Pause()
+		return
+	}
 
 	fmt.Printf("\tEscolha um Evento pelo Código\n\n")
 	var cod string
 	fmt.Printf("codigo: ")
 	fmt.Scanf("%s\n", &cod)
 
-	apresentacoes := controladoras.RecuperarApresentacoes(cod)
-	e := controladoras.RecuperarEvento(cod)
+	apresentacoes, e1 := controladoras.RecuperarApresentacoes(cod)
+	if e1 != nil {
+		fmt.Println(e1.Error())
+		utils.Pause()
+		return
+	}
+	ev, e2 := controladoras.RecuperarEvento(cod)
+	if e2 != nil {
+		fmt.Println(e2.Error())
+		utils.Pause()
+		return
+	}
 
 	utils.ClearScreen()
 
-	fmt.Printf("\tVisualizando Apresentações do Evento: %s\n\n", e.Nome)
+	fmt.Printf("\tVisualizando Apresentações do Evento: %s\n\n", ev.Nome)
 	for _, apr := range apresentacoes {
 		fmt.Println(strings.Repeat("-", 10))
 		fmt.Println(apr.ToString())

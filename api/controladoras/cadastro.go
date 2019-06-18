@@ -9,10 +9,9 @@ import (
 
 // CadastrarNovoUsuario cadastra um novo usuário no sistema se ele não existir.
 func CadastrarNovoUsuario(cpf string, senha []byte) error {
-	senhaCriptografada := utils.CriptografaSenha(senha)
-	if u := repositorios.GetUsuario(cpf); u == nil {
-		repositorios.SetUsuario(cpf, string(senhaCriptografada))
-		return nil
+	if _, err := repositorios.GetUsuario(cpf); err != nil {
+		senhaCriptografada := utils.CriptografaSenha(senha)
+		return repositorios.SetUsuario(cpf, string(senhaCriptografada))
 	}
 
 	return errors.New("ja existe usuario cadastrado com este CPF")

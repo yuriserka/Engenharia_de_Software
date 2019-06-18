@@ -1,10 +1,10 @@
 package controladoras
 
 import (
-		"testing"
+	"testing"
 )
 
-func TestCadastrarNovoEvento(t *testing.T){
+func TestCadastrarNovoEvento(t *testing.T) {
 	cpf := "01234567890"
 	codigo := "1"
 	nome := "Eventao"
@@ -24,18 +24,11 @@ func TestCadastrarNovoEvento(t *testing.T){
 	if got == nil {
 		t.Errorf("[2] CadastrarNovoEvento(%s, %v, %s, %s, %s, %s, %s) = %v; want error", cpf, codigo, nome, cidade, estado, tipo, classificacao, got)
 	}
-	
+
 	// Testa cadasto de evento com o mesmo código, deve retornar erro na falha
 	nome1 := "Evento2"
 	got = CadastrarNovoEvento(cpf, codigo, nome1, cidade, estado, tipo, classificacao)
 	if got == nil {
 		t.Errorf("[3] CadastrarNovoEvento(%s, %v, %s, %s, %s, %s, %s) = %v; want error", cpf, codigo, nome1, cidade, estado, tipo, classificacao, got)
-	}
-
-	// Testa cadastro de evento com o mesmo nome, deve retornar erro na falha
-	codigo1 := "2"
-	got = CadastrarNovoEvento(cpf, codigo1, nome, cidade, estado, tipo, classificacao)
-	if got == nil {
-		t.Errorf("[4] CadastrarNovoEvento(%s, %v, %s, %s, %s, %s, %s) = %v; want error", cpf, codigo1, nome, cidade, estado, tipo, classificacao, got)
 	}
 }

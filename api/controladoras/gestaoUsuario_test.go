@@ -1,20 +1,24 @@
 package controladoras
 
 import (
-		"testing"
+	"testing"
 )
 
-func TestRecuperarUsuario(t *testing.T){
+func TestRecuperarCPFCompletoFormatado(t *testing.T) {
 	cpf := "01234567890"
-	got := RecuperarUsuario(cpf)
+	got := RecuperarCpfFormatado(cpf)
 
-	// Testa se o CPF retornado tem onze dígitos
-	if len(cpf) != 11 {
-		t.Errorf("[1] RecuperarUsuario(%s) = %v; want 11 char string", cpf, got)
+	// Testa se o CPF retornado tem 14 dígitos
+	if len(cpf) != 14 {
+		t.Errorf("[1] RecuperarCpfFormatado(%s) = %v; want 14 char string", cpf, got)
 	}
 }
 
-func TestCadastrarCartaoCredito(t *testing.T){
+func TestRecuperarUsuario(t *testing.T) {
+
+}
+
+func TestCadastrarCartaoCredito(t *testing.T) {
 	cpf := "01234567890"
 	numCartao := "1"
 	codCartao := "2"
@@ -33,10 +37,10 @@ func TestCadastrarCartaoCredito(t *testing.T){
 	}
 }
 
-func TestRecuperarCartoesDeCredito(t *testing.T){
+func TestRecuperarCartoesDeCredito(t *testing.T) {
 	cpf := "01234567890"
-	got := RecuperarCartoesDeCredito(cpf)
-	if len(got) == 0 {
+	_, got := RecuperarCartoesDeCredito(cpf)
+	if got == nil {
 		t.Errorf("[4] RecuperarCartoesDeCredito(%s) = %v; want map with a key-value pair", cpf, got)
 	}
 }

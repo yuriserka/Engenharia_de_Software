@@ -30,7 +30,7 @@ func gestaoUsuario(cpf string) {
 	for opt != kvoltar {
 		utils.ClearScreen()
 		fmt.Println("\tPerfil")
-		fmt.Println(controladoras.RecuperarUsuario(cpf))
+		fmt.Println(controladoras.RecuperarCpfFormatado(cpf))
 
 		for _, i := range sortedIndexes {
 			fmt.Printf("[%d] %s\n", i, menu[i])
@@ -69,7 +69,12 @@ func visualizarCartoes(cpf string) {
 	utils.ClearScreen()
 	fmt.Printf("\tVisualizando Cartões de Crédito\n\n")
 
-	ccs := controladoras.RecuperarCartoesDeCredito(cpf)
+	ccs, e1 := controladoras.RecuperarCartoesDeCredito(cpf)
+	if e1 != nil {
+		fmt.Println(e1.Error())
+		utils.Pause()
+		return
+	}
 	for _, cartao := range ccs {
 		fmt.Println(strings.Repeat("-", 10))
 		fmt.Print(cartao.ToString())
@@ -106,7 +111,12 @@ func visualizarEventos(cpf string) {
 	utils.ClearScreen()
 	fmt.Printf("\tVisualizando Eventos Criados\n\n")
 
-	eventos := controladoras.RecuperarEventosUsuario(cpf)
+	eventos, e1 := controladoras.RecuperarEventosUsuario(cpf)
+	if e1 != nil {
+		fmt.Println(e1.Error())
+		utils.Pause()
+		return
+	}
 	for _, e := range eventos {
 		fmt.Println(strings.Repeat("-", 10))
 		fmt.Printf("Codigo: %s\nNome: %s\nLocal: %s\nClassificação: %s\nTipo: %s\n", e.Codigo,

@@ -1,12 +1,12 @@
 package controladoras
 
 import (
-		"testing"
+	"testing"
 )
 
-func TestCadastrarNovoUsuario(t *testing.T){
+func TestCadastrarNovoUsuario(t *testing.T) {
 	cpf := "01234567890"
-	senha := []byte{1,2,3,4,5}
+	senha := []byte{1, 2, 3, 4, 5}
 
 	// Testa cadastro de novo usuário, deve retornar nil no sucesso do cadastro
 	got := CadastrarNovoUsuario(cpf, senha)
