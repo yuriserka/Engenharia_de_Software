@@ -1,13 +1,13 @@
 package controladoras
 
 import (
-		"testing"
+	"testing"
 )
 
-func TestAutenticar(t *testing.T){
+func TestAutenticar(t *testing.T) {
 	cpf := "00000000000"
 	senha := "senha"
-	senhab := []byte{'s','e','n','h','a'}
+	senhab := []byte{'s', 'e', 'n', 'h', 'a'}
 	CadastrarNovoUsuario(cpf, senhab)
 
 	// Testa autenticar um usuário cadastrado, retorna nil no sucesso
@@ -19,7 +19,7 @@ func TestAutenticar(t *testing.T){
 	// Testa autenticar um usuário com senha errada, retorna erro na falha
 	senha = "outrasenha"
 	got = Autenticar(cpf, senha)
-	if got == nil  {
+	if got == nil {
 		t.Errorf("[2] Autenticar(%s, %s) = %v; want error (senha incorreta)", cpf, senha, got)
 	}
 

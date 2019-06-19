@@ -9,13 +9,9 @@ func TestRecuperarCPFCompletoFormatado(t *testing.T) {
 	got := RecuperarCpfFormatado(cpf)
 
 	// Testa se o CPF retornado tem 14 dígitos
-	if len(cpf) != 14 {
+	if len(got) != 14 {
 		t.Errorf("[1] RecuperarCpfFormatado(%s) = %v; want 14 char string", cpf, got)
 	}
-}
-
-func TestRecuperarUsuario(t *testing.T) {
-
 }
 
 func TestCadastrarCartaoCredito(t *testing.T) {
